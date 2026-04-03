@@ -1,33 +1,38 @@
-import { useState, useCallback } from 'react';
-import { Plus, FlaskConical } from 'lucide-react';
-import { Button } from './components/ui/button';
-import { CreatePageTestDialog } from './components/CreatePageTestDialog';
-import { TestDashboard } from './components/TestDashboard';
-import { TestAnalytics } from './components/TestAnalytics';
-import { VisitorView } from './components/VisitorView';
-import { LandingPageTest, LandingPageVariant, InteractionData } from './types';
+import { useState, useCallback } from "react";
+import { Plus, FlaskConical } from "lucide-react";
+import { Button } from "./components/ui/button";
+import { CreatePageTestDialog } from "./components/CreatePageTestDialog";
+import { TestDashboard } from "./components/TestDashboard";
+import { TestAnalytics } from "./components/TestAnalytics";
+import { VisitorView } from "./components/VisitorView";
+import { LandingPageTest, LandingPageVariant, InteractionData } from "./types";
 
 export default function App() {
   const [tests, setTests] = useState<LandingPageTest[]>([]);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
-  const [visitorViewTestId, setVisitorViewTestId] = useState<string | null>(null);
+  const [visitorViewTestId, setVisitorViewTestId] = useState<string | null>(
+    null,
+  );
 
   const selectedTest = tests.find((t) => t.id === selectedTestId);
   const visitorViewTest = tests.find((t) => t.id === visitorViewTestId);
 
   // Image URLs from Unsplash
   const defaultImages = {
-    'business technology': 'https://images.unsplash.com/photo-1573164713988-8665fc963095?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzc1MjUzODQxfDA&ixlib=rb-4.1.0&q=80&w=1080',
-    'success growth': 'https://images.unsplash.com/photo-1629124096116-48743a0cea58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdWNjZXNzJTIwZ3Jvd3RofGVufDF8fHx8MTc3NTI1Mzg0MXww&ixlib=rb-4.1.0&q=80&w=1080',
-    'modern design': 'https://images.unsplash.com/photo-1518733057094-95b53143d2a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkZXNpZ258ZW58MXx8fHwxNzc1MjUzODQxfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    "business technology":
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzc1MjUzODQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "success growth":
+      "https://images.unsplash.com/photo-1629124096116-48743a0cea58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdWNjZXNzJTIwZ3Jvd3RofGVufDF8fHx8MTc3NTI1Mzg0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "modern design":
+      "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBkZXNpZ258ZW58MXx8fHwxNzc1MjUzODQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
   };
 
   const getImageUrl = (query: string): string => {
     // Return default image based on query, or fallback
     return (
       defaultImages[query as keyof typeof defaultImages] ||
-      'https://images.unsplash.com/photo-1573164713988-8665fc963095?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
     );
   };
 
@@ -46,7 +51,7 @@ export default function App() {
     const newTest: LandingPageTest = {
       id: Date.now().toString(),
       name: data.name,
-      status: 'draft',
+      status: "draft",
       createdAt: new Date(),
       variants: data.variants.map((v, index) => ({
         id: `${Date.now()}-${index}`,
@@ -72,13 +77,14 @@ export default function App() {
     setTests(
       tests.map((test) => {
         if (test.id !== testId) return test;
-        if (test.status === 'completed') return test;
+        if (test.status === "completed") return test;
 
         return {
           ...test,
-          status: test.status === 'live' ? ('draft' as const) : ('live' as const),
+          status:
+            test.status === "live" ? ("draft" as const) : ("live" as const),
         };
-      })
+      }),
     );
   };
 
@@ -90,7 +96,7 @@ export default function App() {
   };
 
   const handleRecordInteraction = useCallback(
-    (testId: string, variantId: string, type: 'view' | 'click') => {
+    (testId: string, variantId: string, type: "view" | "click") => {
       setTests((prevTests) =>
         prevTests.map((test) => {
           if (test.id !== testId) return test;
@@ -104,8 +110,10 @@ export default function App() {
           const updatedVariants = test.variants.map((variant) => {
             if (variant.id !== variantId) return variant;
 
-            const newViews = type === 'view' ? variant.views + 1 : variant.views;
-            const newClicks = type === 'click' ? variant.clicks + 1 : variant.clicks;
+            const newViews =
+              type === "view" ? variant.views + 1 : variant.views;
+            const newClicks =
+              type === "click" ? variant.clicks + 1 : variant.clicks;
             const newCtr = newViews > 0 ? (newClicks / newViews) * 100 : 0;
 
             return {
@@ -121,10 +129,10 @@ export default function App() {
             variants: updatedVariants,
             interactions: [...test.interactions, interaction],
           };
-        })
+        }),
       );
     },
-    []
+    [],
   );
 
   return (
@@ -141,7 +149,10 @@ export default function App() {
       )}
 
       {/* Header */}
-      <header className="border-b border-white/30 sticky top-0 backdrop-blur-xl z-40" style={{ background: 'rgba(255, 255, 255, 0.7)' }}>
+      <header
+        className="border-b border-white/30 sticky top-0 backdrop-blur-xl z-40"
+        style={{ background: "rgba(255, 255, 255, 0.7)" }}
+      >
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -149,14 +160,19 @@ export default function App() {
                 <FlaskConical className="size-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl text-slate-800">Landing Page A/B Tester</h1>
+                <h1 className="text-2xl text-slate-800">
+                  Landing Page A/B Tester
+                </h1>
                 <p className="text-sm text-teal-600">
                   Create, test, and optimize your landing pages
                 </p>
               </div>
             </div>
             {!selectedTest && (
-              <Button onClick={() => setCreateDialogOpen(true)} className="shadow-lg bg-teal-500 hover:bg-teal-600 text-white">
+              <Button
+                onClick={() => setCreateDialogOpen(true)}
+                className="shadow-lg bg-teal-500 hover:bg-teal-600 text-white"
+              >
                 <Plus className="size-4 mr-2" />
                 New A/B Test
               </Button>
@@ -184,13 +200,20 @@ export default function App() {
                 <div className="size-24 rounded-3xl bg-gradient-to-br from-teal-500 to-purple-500 flex items-center justify-center mb-6 shadow-2xl">
                   <FlaskConical className="size-12 text-white" />
                 </div>
-                <h2 className="text-3xl mb-3 text-slate-800">Welcome to Landing Page A/B Testing</h2>
+                <h2 className="text-3xl mb-3 text-slate-800">
+                  Welcome to Landing Page A/B Testing
+                </h2>
                 <p className="text-slate-600 text-center max-w-2xl mb-8">
-                  Create beautiful landing page variants with different headlines, CTAs, and designs.
-                  Test them with real visitors and see which one converts best. Get started by
-                  creating your first test!
+                  Create beautiful landing page variants with different
+                  headlines, CTAs, and designs. Test them with real visitors and
+                  see which one converts best. Get started by creating your
+                  first test!
                 </p>
-                <Button size="lg" onClick={() => setCreateDialogOpen(true)} className="shadow-lg bg-teal-500 hover:bg-teal-600 text-white">
+                <Button
+                  size="lg"
+                  onClick={() => setCreateDialogOpen(true)}
+                  className="shadow-lg bg-teal-500 hover:bg-teal-600 text-white"
+                >
                   <Plus className="size-5 mr-2" />
                   Create Your First Test
                 </Button>
@@ -213,9 +236,12 @@ export default function App() {
                         />
                       </svg>
                     </div>
-                    <h3 className="font-semibold mb-2 text-slate-800">Visual Editor</h3>
+                    <h3 className="font-semibold mb-2 text-slate-800">
+                      Visual Editor
+                    </h3>
                     <p className="text-sm text-slate-600">
-                      Create variants with custom headlines, CTAs, colors, and images
+                      Create variants with custom headlines, CTAs, colors, and
+                      images
                     </p>
                   </div>
 
@@ -235,7 +261,9 @@ export default function App() {
                         />
                       </svg>
                     </div>
-                    <h3 className="font-semibold mb-2 text-slate-800">Real Analytics</h3>
+                    <h3 className="font-semibold mb-2 text-slate-800">
+                      Real Analytics
+                    </h3>
                     <p className="text-sm text-slate-600">
                       Track views, clicks, and CTR for each variant in real-time
                     </p>
@@ -263,9 +291,12 @@ export default function App() {
                         />
                       </svg>
                     </div>
-                    <h3 className="font-semibold mb-2 text-slate-800">Visitor Preview</h3>
+                    <h3 className="font-semibold mb-2 text-slate-800">
+                      Visitor Preview
+                    </h3>
                     <p className="text-sm text-slate-600">
-                      See exactly what visitors see and test interactions yourself
+                      See exactly what visitors see and test interactions
+                      yourself
                     </p>
                   </div>
                 </div>
